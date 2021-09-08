@@ -1,0 +1,84 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:filter="clr-namespace:FootballApp.ViewModels.Filters"
+                    xmlns:extention="clr-namespace:FootballApp.Infrastructure.Extentions"
+                    xmlns:football="clr-namespace:FlashScore.Football;assembly=FlashScore.Football"
+                    xmlns:footballCore="clr-namespace:FlashScore;assembly=FlashScore.Core">
+    
+    <DataTemplate DataType="{x:Type filter:TotalViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}"
+                      SelectedValue="{Binding Half}"/>
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type footballCore:LessMoreEqual}}}"
+                      SelectedValue="{Binding LMQ}" Margin="0 5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="slider" Value="{Binding ValueTotal}" Minimum="0" Maximum="20" TickFrequency="1"/>
+                <TextBlock Grid.Column="1" Text="{Binding ElementName=slider, Path=Value}"/>
+            </Grid>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type filter:TotalCloggedViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}"
+                      SelectedValue="{Binding Half}"/>
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type footballCore:LessMoreEqual}}}"
+                      SelectedValue="{Binding LMQ}" Margin="0 5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="slider" Value="{Binding ValueTotal}" Minimum="0" Maximum="20" TickFrequency="1"/>
+                <TextBlock Grid.Column="1" Text="{Binding ElementName=slider, Path=Value}"/>
+            </Grid>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type filter:TotalMissedViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}"
+                      SelectedValue="{Binding Half}"/>
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type footballCore:LessMoreEqual}}}"
+                      SelectedValue="{Binding LMQ}" Margin="0 5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="slider" Value="{Binding ValueTotal}" Minimum="0" Maximum="20" TickFrequency="1"/>
+                <TextBlock Grid.Column="1" Text="{Binding ElementName=slider, Path=Value}"/>
+            </Grid>
+        </StackPanel>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type filter:BothWillScoreViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}" SelectedValue="{Binding Half}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type filter:VictoryViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}" SelectedValue="{Binding Half}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type filter:DefeatViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}" SelectedValue="{Binding Half}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type filter:DrawMatchViewModel}">
+        <StackPanel Margin="5">
+            <ComboBox ItemsSource="{Binding Source={extention:EnumBindingSource {x:Type football:Half}}}" SelectedValue="{Binding Half}"/>
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

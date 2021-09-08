@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="FootballApp.Views.AnalizView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:a="clr-namespace:FootballApp.Infrastructure.Analiz"
+             xmlns:c="clr-namespace:FootballApp.Infrastructure.Controls"
+             xmlns:conv="clr-namespace:FootballApp.Infrastructure.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="25"/>
+            </Grid.ColumnDefinitions>
+            <Border Visibility="Hidden" Grid.Column="0" x:Name="dummywidth1"/>
+            <Border Visibility="Hidden" Grid.Column="1" x:Name="dummywidth2"/>
+            <Border Visibility="Hidden" Grid.Column="2" x:Name="dummywidth3"/>
+            <Border Visibility="Hidden" Grid.Column="3" x:Name="dummywidth4"/>
+
+            <ListView Grid.ColumnSpan="5"
+                      ItemsSource="{Binding Teams}"
+                      Style="{StaticResource CustomListViewStyle}"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource CustomGridViewColumnHeader}">
+                        <GridViewColumn Header="Время" Width="{Binding ActualWidth, ElementName=dummywidth1}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Current.Time, StringFormat='hh:mm'}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Команда" Width="{Binding ActualWidth, ElementName=dummywidth2}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Team}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Матч" Width="{Binding ActualWidth, ElementName=dummywidth3}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            <Run Text="{Binding Current.Country, Mode=OneWay}"/>
+                                            <Run Text="{Binding Current.Championship, Mode=OneWay}"/>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Current}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{Binding FilterGroup.ColumnName}" Width="{Binding ActualWidth, ElementName=dummywidth4}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FilterResult}" HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <DockPanel LastChildFill="True" Grid.Column="1">
+            <ComboBox DockPanel.Dock="Top"
+                      ItemsSource="{x:Static a:FilterManager.Filters}"
+                      SelectedValue="{Binding SelectedFilter}"/>
+            <Button DockPanel.Dock="Bottom" Content="Apply" Margin="3" Command="{Binding ApplyCommand}"/>
+            
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Filters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <c:CustomExpander Style="{StaticResource CustomExpander}" Header="{Binding Name}" IsExpanded="True">
+                                <Expander.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                            </Grid.ColumnDefinitions>
+                                            <ContentPresenter Content="{Binding}"/>
+                                            <Button Grid.Column="1" Content="x"
+                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=c:CustomExpander}}"
+                                                    Visibility="{Binding HeaderMouseOver, RelativeSource={RelativeSource AncestorType=c:CustomExpander}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </Expander.HeaderTemplate>
+                                <ContentPresenter Content="{Binding}"/>
+                            </c:CustomExpander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

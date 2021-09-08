@@ -1,0 +1,87 @@
+﻿<Page x:Class="MSFootball.TableCurrentMatchesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MSFootball"
+      xmlns:converters="clr-namespace:MSFootball.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TablePage">
+    <Page.Resources>
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Visibility="Hidden" Grid.Column="0" x:Name="dummywidth1"/>
+        <Border Visibility="Hidden" Grid.Column="1" x:Name="dummywidth2"/>
+        <Border Visibility="Hidden" Grid.Column="2" x:Name="dummywidth3"/>
+        <Border Visibility="Hidden" Grid.Column="3" x:Name="dummywidth4"/>
+
+        <ListView Grid.ColumnSpan="4" ItemsSource="{Binding Matches}" Visibility="{Binding TableVisibility}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+
+                    <GridViewColumn Width="{Binding ActualWidth, ElementName=dummywidth1}">
+                        <GridViewColumn.Header>
+                            <CheckBox IsChecked="{Binding IsCheckedAll}"/>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Время" Width="{Binding ActualWidth, ElementName=dummywidth2}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Time, Converter={StaticResource ResourceKey=DateTimeToStringConverter}, ConverterParameter='HH:mm'}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Чемпионат" Width="{Binding ActualWidth, ElementName=dummywidth3}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Country, Mode=OneWay}"/>
+                                    <Run Text=": "/>
+                                    <Run Text="{Binding Championship, Mode=OneWay}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Команда" Width="{Binding ActualWidth, ElementName=dummywidth4}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding FirstTeam.Name}"/>
+                                    <TextBlock Text="{Binding SecondTeam.Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Grid.ColumnSpan="4"
+                Grid.Row="1"
+                Content="Собрать статистику по выбранным матчам"
+                Padding="2"
+                Margin="5 5 5 0"
+                Command="{Binding GetStaticticCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+
+    </Grid>
+</Page>
